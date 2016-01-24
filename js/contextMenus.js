@@ -33,6 +33,13 @@ function tabPageTemplateInit (framePropsList) {
   }]
 }
 
+function inputTemplateInit (e) {
+  const hasSelection = e.target.selectionStart !== undefined &&
+      e.target.selectionEnd !== undefined &&
+      e.target.selectionStart !== e.target.selectionEnd
+  return getEditableItems(hasSelection)
+}
+
 function tabTemplateInit (frameProps) {
   const tabKey = frameProps.get('key')
   const items = []
@@ -106,6 +113,28 @@ function tabTemplateInit (frameProps) {
   }
 
   return items
+}
+
+function getEditableItems (hasSelection) {
+  return [{
+    label: 'Cut',
+    enabled: hasSelection,
+    accelerator: 'CmdOrCtrl+X',
+    // Enabled doesn't work when a role is used
+    role: hasSelection && 'cut' || undefined
+  }, {
+    label: 'Copy',
+    enabled: hasSelection,
+    accelerator: 'CmdOrCtrl+C',
+    // Enabled doesn't work when a role is used
+    role: hasSelection && 'copy' || undefined
+  }, {
+    label: 'Paste',
+    accelerator: 'CmdOrCtrl+V',
+    role: 'paste'
+  }, {
+    type: 'separator'
+  }]
 }
 
 function mainTemplateInit (nodeProps) {
@@ -201,6 +230,13 @@ function mainTemplateInit (nodeProps) {
       })
       break
   }
+
+  if (nodeName === 'TEXTAREA' || nodeName === 'INPUT' || nodeProps.isContentEditable) {
+    const editableItems = getEditableItems(nodeProps.hasSelection)
+    editableItems.push({ type: 'separator' })
+    template.unshift(...editableItems)
+  }
+
   return template
 }
 
@@ -219,4 +255,9 @@ export function onTabPageContextMenu (framePropsList, e) {
   e.preventDefault()
   const tabPageMenu = Menu.buildFromTemplate(tabPageTemplateInit(framePropsList))
   tabPageMenu.popup(remote.getCurrentWindow())
+}
+
+export function onURLBarContextMenu (e) {
+  const inputMenu = Menu.buildFromTemplate(inputTemplateInit(e))
+  inputMenu.popup(remote.getCurrentWindow())
 }

@@ -6,6 +6,8 @@ Laptop and Desktop browser for OS X, Windows and Linux.
 
 ## Installation
 
+Make sure you have all of the pre-requisite compilers/applications [Installed](https://github.com/brave/browser-laptop/blob/master/docs/prerequisites.md)
+
 1. Shallow clone the git repository from GitHub:
         
         # For beta testers:
@@ -25,7 +27,7 @@ Laptop and Desktop browser for OS X, Windows and Linux.
 
         npm install
 
-If this fails on Linux with an error related to `abp-filter-parser-cpp`, try updating to Node 5.5 (see discussion at https://github.com/brave/browser-laptop/issues/214)
+If this fails on Linux with an error related to `abp-filter-parser-cpp`, try updating to Node 5.5 and `node-gyp` 3.2.1 (see discussion at https://github.com/brave/browser-laptop/issues/214)
 
 ## Development
 
