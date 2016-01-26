@@ -183,12 +183,9 @@ document.addEventListener('contextmenu', (e) => {
   var name = e.target.nodeName.toUpperCase()
   var nodeProps = {
     name: name,
-    src: name === 'A' ? e.target.href : e.target.src,
-    isContentEditable: e.target.isContentEditable,
-    hasSelection: e.target.selectionStart !== undefined &&
-      e.target.selectionEnd !== undefined &&
-      e.target.selectionStart !== e.target.selectionEnd
+    src: name === 'A' ? e.target.href : e.target.src
   }
+  console.log('sending', nodeProps)
   ipc.send(messages.CONTEXT_MENU_OPENED, nodeProps)
   e.preventDefault()
 }, false)
